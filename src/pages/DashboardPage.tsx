@@ -19,6 +19,7 @@ import {
     UserRound,
     X,
     Pencil,
+    Eye,
 } from "lucide-react";
 
 import { apiRequest } from "../lib/api";
@@ -109,6 +110,11 @@ export default function DashboardPage() {
             return null;
         }
     });
+
+    const [viewingNote, setViewingNote] = useState<Note | null>(null);
+    const [viewOpen, setViewOpen] = useState(false);
+    const [viewLoading, setViewLoading] = useState(false);
+    const [viewError, setViewError] = useState("");
 
     const [notes, setNotes] = useState<Note[]>([]);
     const [totalNotes, setTotalNotes] = useState(0);
@@ -286,6 +292,39 @@ export default function DashboardPage() {
         navigate("/login", { replace: true });
     }
 
+    async function handleViewNote(noteId: string) {
+        const token = localStorage.getItem("accessToken");
+
+        if (!token) {
+            navigate("/login");
+            return;
+        }
+
+        setViewOpen(true);
+        setViewLoading(true);
+        setViewError("");
+        setViewingNote(null);
+
+        try {
+            const note = await apiRequest<Note>(
+                `/notes/${noteId}`,
+                {},
+                token
+            );
+            
+
+            setViewingNote(note);
+        } catch (error) {
+            setViewError(
+                error instanceof Error
+                    ? error.message
+                    : "Failed to load note."
+            );
+        } finally {
+            setViewLoading(false);
+        }
+    }
+
     const filteredNotes = notes.filter((note) => {
         const query = searchQuery.toLowerCase().trim();
 
@@ -325,6 +364,17 @@ export default function DashboardPage() {
                             >
                                 <StickyNote className="size-4" />
                                 My notes
+                                <span className="ml-auto rounded-md bg-white px-2 py-0.5 text-xs text-zinc-600">
+                                    {totalNotes}
+                                </span>
+                            </Button>
+                            <Button
+                                onClick={()=>navigate("/admin/notes")}
+                                variant="secondary"
+                                className="h-10 w-full justify-start gap-3 bg-zinc-100 font-medium text-zinc-900 hover:bg-zinc-100"
+                            >
+                                <StickyNote className="size-4" />
+                                All notes
                                 <span className="ml-auto rounded-md bg-white px-2 py-0.5 text-xs text-zinc-600">
                                     {totalNotes}
                                 </span>
@@ -428,21 +478,14 @@ export default function DashboardPage() {
                                     <Button
                                         variant="outline"
                                         size="icon"
-                                        className="size-9 lg:hidden"
+                                        className="size-9"
                                         aria-label="Open account menu"
                                     />
                                 }>
-                                    {/* <Button
-                                        variant="outline"
-                                        size="icon"
-                                        className="size-9 lg:hidden"
-                                        aria-label="Open account menu"
-                                    >
-                                    </Button> */}
                                     <Menu className="size-4" />
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent align="end">
-                                    <DropdownMenuItem disabled>
+                                    <DropdownMenuItem onClick={()=>navigate("/profile")}>
                                         <UserRound className="mr-2 size-4" />
                                         {user?.name ?? "Account"}
                                     </DropdownMenuItem>
@@ -620,20 +663,19 @@ export default function DashboardPage() {
                                                         <Button
                                                             variant="outline"
                                                             size="icon"
-                                                            className="size-9 lg:hidden"
+                                                            className="size-9 "
                                                             aria-label="Open account menu"
                                                         />
                                                     }>
-                                                        {/* <Button
-                                                            variant="ghost"
-                                                            size="icon"
-                                                            className="size-8 shrink-0 text-zinc-400 opacity-100 hover:text-zinc-900 sm:opacity-0 sm:group-hover:opacity-100"
-                                                            aria-label={`Actions for ${note.title}`}
-                                                        >
-                                                        </Button> */}
                                                         <MoreHorizontal className="size-4" />
                                                     </DropdownMenuTrigger>
                                                     <DropdownMenuContent align="end">
+                                                        <DropdownMenuItem
+                                                            onClick={() => handleViewNote(note._id)}
+                                                        >
+                                                            <Eye className="mr-2 size-4" />
+                                                            View note
+                                                        </DropdownMenuItem>
                                                         <DropdownMenuItem onClick={() => openEditDialog(note)}>
                                                             <Pencil className="mr-2 size-4" />
                                                             Edit note
@@ -728,6 +770,51 @@ export default function DashboardPage() {
                     </div>
                 </main>
             </div>
+            {/* note view dialog */}
+            <Dialog open={viewOpen} onOpenChange={setViewOpen}>
+                <DialogContent className="sm:max-w-2xl">
+                    <DialogHeader>
+                        <DialogTitle>{viewingNote?.title}</DialogTitle>
+                        <DialogDescription>
+                            {viewingNote?.content}
+                        </DialogDescription>
+                    </DialogHeader>
+
+                    {viewLoading ? (
+                        <div className="py-10 text-center text-sm text-muted-foreground">
+                            Loading note...
+                        </div>
+                    ) : viewError ? (
+                        <div className="rounded-md border border-destructive/30 bg-destructive/5 p-4 text-sm text-destructive">
+                            {viewError}
+                        </div>
+                    ) : viewingNote ? (
+                        <div className="space-y-4">
+                            <h3 className="break-words text-lg font-semibold">
+                                {viewingNote.title}
+                            </h3>
+
+                            <div className="max-h-[50vh] overflow-y-auto rounded-md border p-4">
+                                <p className="whitespace-pre-wrap break-words text-sm leading-7">
+                                    {viewingNote.content || "No content."}
+                                </p>
+                            </div>
+
+                            <p className="text-xs text-muted-foreground">
+                                Created{" "}
+                                {new Date(viewingNote.createdAt).toLocaleString()}
+                            </p>
+
+                            {viewingNote.updatedAt && (
+                                <p className="text-xs text-muted-foreground">
+                                    Updated{" "}
+                                    {new Date(viewingNote.updatedAt).toLocaleString()}
+                                </p>
+                            )}
+                        </div>
+                    ) : null}
+                </DialogContent>
+            </Dialog>
 
             {/* Create / edit note dialog */}
             <Dialog
