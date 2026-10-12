@@ -311,7 +311,7 @@ export default function DashboardPage() {
                 {},
                 token
             );
-            
+
 
             setViewingNote(note);
         } catch (error) {
@@ -359,6 +359,15 @@ export default function DashboardPage() {
 
                         <nav className="space-y-1">
                             <Button
+                                variant="ghost"
+                                className="h-10 w-full justify-start gap-3 text-zinc-500"
+                                disabled
+                                title="Coming soon"
+                            >
+                                <LayoutDashboard className="size-4" />
+                                Overview
+                            </Button>
+                            <Button
                                 variant="secondary"
                                 className="h-10 w-full justify-start gap-3 bg-zinc-100 font-medium text-zinc-900 hover:bg-zinc-100"
                             >
@@ -369,7 +378,7 @@ export default function DashboardPage() {
                                 </span>
                             </Button>
                             <Button
-                                onClick={()=>navigate("/admin/notes")}
+                                onClick={() => navigate("/admin/notes")}
                                 variant="secondary"
                                 className="h-10 w-full justify-start gap-3 bg-zinc-100 font-medium text-zinc-900 hover:bg-zinc-100"
                             >
@@ -380,19 +389,11 @@ export default function DashboardPage() {
                                 </span>
                             </Button>
 
-                            <Button
-                                variant="ghost"
-                                className="h-10 w-full justify-start gap-3 text-zinc-500"
-                                disabled
-                                title="Coming soon"
-                            >
-                                <LayoutDashboard className="size-4" />
-                                Overview
-                            </Button>
+
 
                             {user?.role === "admin" && (
                                 <Button
-                                    variant="ghost"
+                                    variant="secondary"
                                     className="h-10 w-full justify-start gap-3 text-zinc-500"
                                     onClick={() => navigate("/admin")}
                                 >
@@ -485,7 +486,7 @@ export default function DashboardPage() {
                                     <Menu className="size-4" />
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent align="end">
-                                    <DropdownMenuItem onClick={()=>navigate("/profile")}>
+                                    <DropdownMenuItem onClick={() => navigate("/profile")}>
                                         <UserRound className="mr-2 size-4" />
                                         {user?.name ?? "Account"}
                                     </DropdownMenuItem>

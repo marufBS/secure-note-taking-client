@@ -71,6 +71,18 @@ export default function LoginPage() {
             Your private thoughts, safely organized.
           </p>
         </div>
+        <div className="mb-8 text-center">
+          
+          <h3 className="text-xl font-semibold tracking-tight">
+            Admin Credentials:
+          </h3>
+          <p className="mt-2 text-sm text-muted-foreground">
+            email: admin@example.com
+          </p>
+          <p className="mt-2 text-sm text-muted-foreground">
+            pass: admin123
+          </p>
+        </div>
 
         <Card className="border-border/70 shadow-sm">
           <CardHeader className="space-y-1">
