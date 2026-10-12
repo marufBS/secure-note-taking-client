@@ -20,6 +20,7 @@ import {
     X,
     Pencil,
     Eye,
+    MessageSquareText
 } from "lucide-react";
 
 import { apiRequest } from "../lib/api";
@@ -373,9 +374,17 @@ export default function DashboardPage() {
                             >
                                 <StickyNote className="size-4" />
                                 My notes
-                                <span className="ml-auto rounded-md bg-white px-2 py-0.5 text-xs text-zinc-600">
+                                <span className="ml-auto rounded-md bg-white px-2 py-0.5 text-xs text-zinc-900">
                                     {totalNotes}
                                 </span>
+                            </Button>
+                            <Button
+                                variant="secondary"
+                                className="h-10 w-full justify-start gap-3 bg-zinc-100 font-medium text-zinc-900"
+                                onClick={() => navigate("/posts")}
+                            >
+                                <MessageSquareText className="size-4" />
+                                My posts
                             </Button>
                             <Button
                                 onClick={() => navigate("/admin/notes")}

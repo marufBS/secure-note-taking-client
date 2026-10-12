@@ -12,6 +12,7 @@ import {
     ChevronLeft,
     ChevronRight,
     ArrowLeft,
+    Tags,
 } from "lucide-react";
 
 import { apiRequest } from "@/lib/api";
@@ -45,6 +46,7 @@ type AdminUser = {
     name: string;
     email: string;
     role: Role;
+    interest?: string[];
     createdAt?: string;
 };
 
@@ -60,6 +62,7 @@ type UserForm = {
     email: string;
     password: string;
     role: Role;
+    interest: string;
 };
 
 type UsersResponse = {
@@ -77,6 +80,7 @@ const EMPTY_FORM: UserForm = {
     email: "",
     password: "",
     role: "user",
+    interest: ""
 };
 
 const PAGE_SIZE = 10;
@@ -186,6 +190,7 @@ export default function AdminPage() {
             email: user.email,
             password: "",
             role: user.role,
+            interest: (user.interest ?? []).join(", ")
         });
         setFormError("");
         setDialogOpen(true);
@@ -230,11 +235,25 @@ export default function AdminPage() {
             setFormError("A new password must be at least 8 characters.");
             return;
         }
+        const interests = [
+            ...new Map(
+                form.interest
+                    .split(",")
+                    .map((interest) => interest.trim())
+                    .filter(Boolean)
+                    .map((interest) => [
+                        interest.toLowerCase(),
+                        interest,
+                    ]),
+            ).values(),
+        ];
 
         const payload: Partial<UserForm> = {
             name: form.name.trim(),
             email: form.email.trim(),
             role: form.role,
+            interest: interests as any,
+            ...(form.password ? { password: form.password } : {})
         };
 
         if (form.password) {
@@ -401,10 +420,25 @@ export default function AdminPage() {
                         </p>
                     </div>
 
-                    <Button onClick={openCreateDialog} className="gap-2">
+                    {/* <Button onClick={openCreateDialog} className="gap-2">
                         <Plus className="size-4" />
                         Create user
-                    </Button>
+                    </Button> */}
+                    <div className="flex flex-wrap gap-2">
+                        <Button
+                            variant="outline"
+                            onClick={() => navigate("/admin/interests")}
+                            className="gap-2"
+                        >
+                            <Tags className="size-4" />
+                            Interest groups
+                        </Button>
+
+                        <Button onClick={openCreateDialog} className="gap-2">
+                            <Plus className="size-4" />
+                            Create user
+                        </Button>
+                    </div>
                 </div>
 
                 {notice && (
@@ -499,6 +533,7 @@ export default function AdminPage() {
                                     <tr>
                                         <th className="px-6 py-4 font-medium">User</th>
                                         <th className="px-6 py-4 font-medium">Role</th>
+                                        <th className="px-6 py-4 font-medium">Interests</th>
                                         <th className="px-6 py-4 font-medium">Joined</th>
                                         <th className="px-6 py-4 text-right font-medium">
                                             Actions
@@ -569,6 +604,20 @@ export default function AdminPage() {
                                                         >
                                                             {user.role === "admin" ? "Admin" : "User"}
                                                         </Badge>
+                                                    </td>
+
+                                                    <td className="px-6 py-4">
+                                                        <div className="flex max-w-sm flex-wrap gap-1.5">
+                                                            {(user.interest ?? []).length > 0 ? (
+                                                                user.interest!.map((interest) => (
+                                                                    <Badge key={interest} variant="secondary">
+                                                                        {interest}
+                                                                    </Badge>
+                                                                ))
+                                                            ) : (
+                                                                <span className="text-zinc-400">None assigned</span>
+                                                            )}
+                                                        </div>
                                                     </td>
 
                                                     <td className="px-6 py-4 text-zinc-600">
@@ -684,6 +733,23 @@ export default function AdminPage() {
                                 required
                                 autoComplete="email"
                             />
+                        </div>
+
+                        <div className="space-y-2">
+                            <Label htmlFor="admin-interest">Interests</Label>
+
+                            <Input
+                                id="admin-interest"
+                                value={form.interest}
+                                onChange={(event) =>
+                                    updateForm("interest", event.target.value)
+                                }
+                                placeholder="Programming, Reading, Gaming"
+                            />
+
+                            <p className="text-xs text-zinc-500">
+                                Separate interests with commas. Leave empty if the user has none.
+                            </p>
                         </div>
 
                         <div className="space-y-2">
