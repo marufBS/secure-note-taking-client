@@ -1,75 +1,87 @@
-# React + TypeScript + Vite
+# NoteBunker — Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A responsive note-taking application built with React and TypeScript. It provides an interface for managing personal notes, authenticating users, and accessing administrative features.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Authentication:** User registration and login.
+- **Notes management:** Create, view, update, and delete personal notes.
+- **Dashboard:** Browse and manage notes with pagination.
+- **Admin user management:** Manage user accounts through the admin interface.
+- **Admin notes overview:** View notes across users.
+- **Protected access:** Connects to authenticated backend endpoints using JWT.
+- **Responsive UI:** Built with Tailwind CSS and shadcn/ui components.
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
+- shadcn/ui
+- React Router
+- Fetch API for backend communication
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Prerequisites
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- Node.js
+- npm
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Installation
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Clone the repository and enter the frontend project directory:
 
+```bash
+git clone https://github.com/marufBS/secure-note-taking-client.git
+cd <frontend-project-directory>
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+### Environment Variables
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Create a `.env` file in the frontend project root:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```env
+VITE_API_URL=https://secure-note-taking-api.onrender.com/api
 ```
+
+
+### Run the Development Server
+
+```bash
+npm run dev
+```
+
+Vite will display the local development URL in the terminal.
+
+### Build for Production
+
+```bash
+npm run build
+```
+
+
+
+## Project Structure
+
+```text
+src/
+├── assets/
+├── components/
+│   └── ui/
+├── lib/
+│   └── api.ts
+├── pages/
+│   ├── AdminPage.tsx
+│   ├── AdminUsersPage.tsx
+│   ├── DashboardPage.tsx
+│   ├── LoginPage.tsx
+│   ├── ProfilePage.tsx
+│   ├── RegisterPage.tsx
+│   └── ...
+├── App.tsx
+└── main.tsx
+```
+

@@ -371,7 +371,7 @@ export default function AdminPage() {
                             <ShieldCheck className="size-5" />
                         </div>
                         <div>
-                            <p className="text-sm font-semibold">Secure Notes</p>
+                            <p className="text-sm font-semibold">NoteBunker</p>
                             <p className="text-xs text-zinc-500">Administration</p>
                         </div>
                     </div>
@@ -397,7 +397,7 @@ export default function AdminPage() {
                             User management
                         </h1>
                         <p className="mt-2 text-sm text-zinc-600">
-                            Manage accounts, permissions, and access to Secure Notes.
+                            Manage accounts, permissions, and access to NoteBunker.
                         </p>
                     </div>
 

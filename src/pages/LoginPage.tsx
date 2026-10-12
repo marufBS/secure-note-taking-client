@@ -65,7 +65,7 @@ export default function LoginPage() {
             <LockKeyhole className="size-6" />
           </div>
           <h1 className="text-3xl font-semibold tracking-tight">
-            Secure Notes
+            NoteBunker
           </h1>
           <p className="mt-2 text-sm text-muted-foreground">
             Your private thoughts, safely organized.

@@ -336,7 +336,7 @@ export default function AdminUsersPage() {
 
                         <div className="min-w-0">
                             <h1 className="truncate font-semibold tracking-tight">
-                                Secure Notes
+                                NoteBunker
                             </h1>
                             <p className="text-xs text-zinc-500">
                                 Administration
@@ -639,7 +639,7 @@ export default function AdminUsersPage() {
                 </Card>
 
                 <footer className="mt-8 flex flex-col items-center justify-between gap-2 border-t border-zinc-200 pt-5 text-xs text-zinc-400 sm:flex-row">
-                    <p>Secure Notes · Administration</p>
+                    <p>NoteBunker · Administration</p>
                     <p className="flex items-center gap-1.5">
                         <ShieldCheck className="size-3.5" />
                         Admin access required

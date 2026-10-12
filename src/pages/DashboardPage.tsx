@@ -345,7 +345,7 @@ export default function DashboardPage() {
                             <ShieldCheck className="size-5" />
                         </div>
                         <div>
-                            <p className="font-semibold tracking-tight">Secure Notes</p>
+                            <p className="font-semibold tracking-tight">NoteBunker</p>
                             <p className="text-xs text-zinc-500">Your private workspace</p>
                         </div>
                     </div>
@@ -762,7 +762,7 @@ export default function DashboardPage() {
                         </div>
 
                         <footer className="mt-10 flex flex-col items-center justify-between gap-2 border-t border-zinc-200 pt-5 text-xs text-zinc-400 sm:flex-row">
-                            <p>Secure Notes · Your thoughts, kept private.</p>
+                            <p>NoteBunker · Your thoughts, kept private.</p>
                             <p className="flex items-center gap-1.5">
                                 <ShieldCheck className="size-3.5" />
                                 Authenticated workspace
